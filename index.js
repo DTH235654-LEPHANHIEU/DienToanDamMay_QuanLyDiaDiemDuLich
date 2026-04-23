@@ -1,15 +1,28 @@
 var express = require('express'); 
 var app = express(); 
 var mongoose = require('mongoose'); 
+
+// Load environment variables from .env file
+if (typeof process.loadEnvFile === 'function') {
+    process.loadEnvFile();
+}
+
 // const User = require('./models/User');
  
-var uri = 'mongodb://user01:089205000691@ac-ztzmbka-shard-00-02.rulyh4r.mongodb.net:27017/trangtin?ssl=true&authSource=admin'; 
+var uri = process.env.MONGODB_URI;
 mongoose.connect(uri) 
     .then(() => console.log('Đã kết nối thành công tới MongoDB.')) 
     .catch(err => console.log(err)); 
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
+
+// Pass Google Maps API Key to all views
+app.use((req, res, next) => {
+    res.locals.GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+    next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
