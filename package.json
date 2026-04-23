@@ -1,0 +1,19 @@
+{
+  "name": "diadiemdulich",
+  "version": "1.0.0",
+  "description": "Quản lý địa điểm du lịch",
+  "license": "ISC",
+  "author": "Lê Phan Hiếu",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.4.1",
+    "nodemon": "^3.1.14"
+  }
+}

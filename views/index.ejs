@@ -1,0 +1,142 @@
+<%- include('partials/head') %>
+
+<div class="container-fluid p-0 h-100 overflow-hidden">
+    <div class="row g-0 h-100">
+        <!-- Sidebar -->
+        <div class="col-12 col-md-4 col-lg-3 d-flex flex-column bg-white border-end h-100 sidebar-container">
+            <%- include('partials/navbar') %>
+            
+            <!-- Location List -->
+            <div class="location-list flex-grow-1 overflow-auto p-3" id="locationList">
+                <!-- Cards will be injected here by JS -->
+                <div class="text-center py-5 text-muted" id="loadingState">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <p>Đang tải dữ liệu...</p>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+        </div>
+
+        <!-- Map Container -->
+        <div class="col-12 col-md-8 col-lg-9 h-100 position-relative">
+            <div id="map" class="h-100 w-100 bg-light"></div>
+            
+            <!-- Map Overlay Controls (Optional) -->
+            <div class="position-absolute top-0 end-0 m-3 d-none d-md-block">
+                <div class="bg-white p-2 rounded-3 shadow-sm border">
+                    <span class="badge bg-primary rounded-pill" id="locationCount">0 địa điểm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Modal: Add Location -->
+<div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="addLocationModalLabel">Thêm địa điểm mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addLocationForm">
+                    <div class="mb-3">
+                        <label for="locName" class="form-label small fw-bold">Tên địa điểm</label>
+                        <input type="text" class="form-control shadow-none" id="locName" required placeholder="Ví dụ: Vịnh Hạ Long">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="locLat" class="form-label small fw-bold">Vĩ độ (Latitude)</label>
+                            <input type="number" step="any" class="form-control shadow-none" id="locLat" required placeholder="20.9101">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="locLng" class="form-label small fw-bold">Kinh độ (Longitude)</label>
+                            <input type="number" step="any" class="form-control shadow-none" id="locLng" required placeholder="107.1839">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="locCategory" class="form-label small fw-bold">Danh mục</label>
+                        <select class="form-select shadow-none" id="locCategory" required>
+                            <option value="Biển">Biển</option>
+                            <option value="Núi">Núi</option>
+                            <option value="Văn hóa">Văn hóa</option>
+                            <option value="Ẩm thực">Ẩm thực</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="locImage" class="form-label small fw-bold">Link ảnh (URL)</label>
+                        <input type="url" class="form-control shadow-none" id="locImage" required placeholder="https://example.com/image.jpg">
+                        <div id="imagePreview" class="mt-2 rounded-3 overflow-hidden d-none" style="height: 150px;">
+                            <img src="" alt="Preview" class="w-100 h-100 object-fit-cover">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="locDesc" class="form-label small fw-bold">Mô tả</label>
+                        <textarea class="form-control shadow-none" id="locDesc" rows="3" placeholder="Mô tả ngắn về địa điểm..."></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary py-2 fw-bold">Lưu địa điểm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Modal: Edit Location -->
+<div class="modal fade" id="editLocationModal" tabindex="-1" aria-labelledby="editLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="editLocationModalLabel">Chỉnh sửa địa điểm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editLocationForm">
+                    <input type="hidden" id="editLocId">
+                    <div class="mb-3">
+                        <label for="editLocName" class="form-label small fw-bold">Tên địa điểm</label>
+                        <input type="text" class="form-control shadow-none" id="editLocName" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="editLocLat" class="form-label small fw-bold">Vĩ độ (Latitude)</label>
+                            <input type="number" step="any" class="form-control shadow-none" id="editLocLat" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editLocLng" class="form-label small fw-bold">Kinh độ (Longitude)</label>
+                            <input type="number" step="any" class="form-control shadow-none" id="editLocLng" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLocCategory" class="form-label small fw-bold">Danh mục</label>
+                        <select class="form-select shadow-none" id="editLocCategory" required>
+                            <option value="Biển">Biển</option>
+                            <option value="Núi">Núi</option>
+                            <option value="Văn hóa">Văn hóa</option>
+                            <option value="Ẩm thực">Ẩm thực</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLocImage" class="form-label small fw-bold">Link ảnh (URL)</label>
+                        <input type="url" class="form-control shadow-none" id="editLocImage" required>
+                        <div id="editImagePreview" class="mt-2 rounded-3 overflow-hidden" style="height: 150px;">
+                            <img src="" alt="Preview" class="w-100 h-100 object-fit-cover">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLocDesc" class="form-label small fw-bold">Mô tả</label>
+                        <textarea class="form-control shadow-none" id="editLocDesc" rows="3"></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary py-2 fw-bold">Cập nhật địa điểm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/scripts') %>

@@ -1,0 +1,49 @@
+<%- include('partials/head') %>
+
+<div class="container h-100 d-flex align-items-center justify-content-center">
+    <div class="card border-0 shadow-lg overflow-hidden" style="max-width: 900px; border-radius: 24px;">
+        <div class="row g-0">
+            <div class="col-md-6 d-none d-md-block">
+                <img src="https://picsum.photos/seed/travel-register/600/800" class="w-100 h-100 object-fit-cover" alt="Travel">
+            </div>
+            <div class="col-md-6 p-5 bg-white">
+                <div class="mb-5">
+                    <h2 class="fw-bold text-primary">Bắt đầu hành trình</h2>
+                    <p class="text-muted">Tạo tài khoản để khám phá thế giới.</p>
+                </div>
+                
+                <form id="registerForm" action="/register" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Họ và tên</label>
+                        <input type="text" name="name" class="form-control form-control-lg bg-light border-0 shadow-none" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Email</label>
+                        <input type="email" name="email" class="form-control form-control-lg bg-light border-0 shadow-none" placeholder="name@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Mật khẩu</label>
+                        <input type="password" name="password" class="form-control form-control-lg bg-light border-0 shadow-none" placeholder="••••••••" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold">Xác nhận mật khẩu</label>
+                        <input type="password" name="confirmPassword" class="form-control form-control-lg bg-light border-0 shadow-none" placeholder="••••••••" required>
+                    </div>
+                    <div class="d-grid mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold py-3 rounded-3">Đăng ký</button>
+                    </div>
+                    <% if (typeof error !== 'undefined') { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= error %>
+                        </div>
+                    <% } %>
+                    <div class="text-center">
+                        <p class="small text-muted">Đã có tài khoản? <a href="/login" class="text-primary fw-bold text-decoration-none">Đăng nhập</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/scripts') %>

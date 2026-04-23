@@ -1,0 +1,40 @@
+<div class="sidebar-header p-4 border-bottom bg-white sticky-top">
+    <div class="d-flex align-items-center mb-4">
+        <div class="bg-primary text-white p-2 rounded-3 me-3">
+            <i class="bi bi-map-fill fs-4"></i>
+        </div>
+        <h4 class="mb-0 fw-bold text-primary flex-grow-1">TravelDash</h4>
+        <div class="dropdown">
+            <button class="btn btn-light btn-sm rounded-circle shadow-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                <li><a class="dropdown-item small" href="/login">Đăng nhập</a></li>
+                <li><a class="dropdown-item small" href="/register">Đăng ký</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Search Box -->
+    <div class="search-box mb-4">
+        <div class="input-group">
+            <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+            <input type="text" id="searchInput" class="form-control bg-light border-0 shadow-none" placeholder="Tìm kiếm địa điểm...">
+        </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="categories d-flex gap-2 overflow-auto pb-2 mb-2" id="categoryFilters">
+        <button class="btn btn-sm btn-primary rounded-pill px-3 filter-btn active" data-category="all">Tất cả</button>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 filter-btn" data-category="Biển">Biển</button>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 filter-btn" data-category="Núi">Núi</button>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 filter-btn" data-category="Văn hóa">Văn hóa</button>
+        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 filter-btn" data-category="Ẩm thực">Ẩm thực</button>
+    </div>
+
+    <div class="d-grid mt-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal">
+            <i class="bi bi-plus-lg me-2"></i>Thêm địa điểm
+        </button>
+    </div>
+</div>
